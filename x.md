@@ -1,0 +1,1 @@
+python3 ufw.py --netuid 18 --custom-ips 212.69.87.137 
