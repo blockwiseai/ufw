@@ -1,0 +1,4 @@
+.venv
+.vscode
+state.json
+ufw-manager.lock

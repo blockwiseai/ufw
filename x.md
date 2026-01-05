@@ -1,1 +1,1 @@
-python3 ufw.py --netuid 18 --custom-ips 212.69.87.137 
+python3 ufw.py --netuid 18 --custom-ips 205.172.58.201 --aws-service ROUTE53_HEALTHCHECKS --top-n 8
