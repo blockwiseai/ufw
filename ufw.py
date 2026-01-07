@@ -62,12 +62,27 @@ def with_lock(lock_path: str):
     return _Lock(lock_path)
 
 
+def ensure_ssh_allowed() -> None:
+    """Ensure an allow rule for SSH exists in UFW (idempotent)."""
+    try:
+        # Prefer the OpenSSH application profile (22/tcp).
+        rc, _, _ = run_cmd(["sudo", "ufw", "allow", "OpenSSH"], check=False)
+        if rc != 0:
+            # Fallback if the OpenSSH profile is not available.
+            run_cmd(["sudo", "ufw", "allow", "22/tcp"], check=False)
+
+        log("Ensured SSH is allowed in UFW (OpenSSH / 22tcp)", "INFO")
+    except Exception as e:
+        log(f"Failed to ensure SSH is allowed via UFW: {e}", "ERROR")
+
+
 def ensure_ufw_active() -> None:
     """Ensure UFW is enabled; do not disable/reset.
 
     Safety: if UFW is inactive, allow SSH before enabling to avoid lockout.
     """
     try:
+        ensure_ssh_allowed()
         _, out, _ = run_cmd(["sudo", "ufw", "status"], check=False)
         if "Status: inactive" in out:
             log("UFW is inactive, enabling it", "WARNING")

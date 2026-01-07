@@ -1,1 +1,7 @@
+```sh
+apt install python3-venv
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt 
 python3 ufw.py --netuid 18 --custom-ips 205.172.58.201 --aws-service ROUTE53_HEALTHCHECKS --top-n 8
+```
